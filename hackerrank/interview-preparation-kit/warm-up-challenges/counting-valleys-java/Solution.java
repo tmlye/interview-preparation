@@ -1,4 +1,4 @@
-// https://www.hackerrank.com/challenges/sock-merchant/problem
+// https://www.hackerrank.com/challenges/counting-valleys/problem
 import java.io.*;
 import java.math.*;
 import java.security.*;
@@ -12,28 +12,33 @@ import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
 class Result {
+
     /*
-     * Complete the 'sockMerchant' function below.
+     * Complete the 'countingValleys' function below.
      *
      * The function is expected to return an INTEGER.
      * The function accepts following parameters:
-     *  1. INTEGER n
-     *  2. INTEGER_ARRAY ar
+     *  1. INTEGER steps
+     *  2. STRING path
      */
 
-    public static int sockMerchant(int n, List<Integer> ar) {
-        Map<Integer, Integer> socksCount = new HashMap<>();
-
-        for (int color : ar) {
-            if (socksCount.containsKey(color)) {
-                socksCount.replace(color, socksCount.get(color) + 1);
+    public static int countingValleys(int steps, String path) {
+        int level = 0;
+        int valleyCount = 0;
+        for (char c : path.toCharArray()) {
+            if (c == 'D') {
+                if (level == 0) {
+                    valleyCount++;
+                }
+                level--;
             } else {
-                socksCount.put(color, 1);
+                level++;
             }
         }
 
-        return socksCount.values().stream().mapToInt(x -> x / 2).sum();
+        return valleyCount;
     }
+
 }
 
 public class Solution {
@@ -41,13 +46,11 @@ public class Solution {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
 
-        int n = Integer.parseInt(bufferedReader.readLine().trim());
+        int steps = Integer.parseInt(bufferedReader.readLine().trim());
 
-        List<Integer> ar = Stream.of(bufferedReader.readLine().replaceAll("\\s+$", "").split(" "))
-            .map(Integer::parseInt)
-            .collect(toList());
+        String path = bufferedReader.readLine();
 
-        int result = Result.sockMerchant(n, ar);
+        int result = Result.countingValleys(steps, path);
 
         bufferedWriter.write(String.valueOf(result));
         bufferedWriter.newLine();
